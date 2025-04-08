@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Water & Waste Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fa;
+    }
+    header {
+      background: #00aaff;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    section {
+      padding: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    #map {
+      width: 100%;
+      height: 300px;
+      margin-bottom: 20px;
+    }
+    form input, form textarea {
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    form button {
+      padding: 10px 20px;
+      background: #00aaff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table th, table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    .status {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    .card {
+      flex: 1;
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .low { background: #ffcccc; }
+    .normal { background: #ccffcc; }
+    .no-supply { background: #ffe066; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Water & Waste Management - Coimbatore</h1>
+</header>
+
+<section>
+  <h2>🗺️ Water Source Locations</h2>
+  <div id="map"></div>
+</section>
+
+<section>
+  <h2>📢 Report an Issue</h2>
+  <form onsubmit="submitComplaint(event)">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="text" id="location" placeholder="Location / Area" required>
+    <textarea id="issue" placeholder="Describe the issue..." rows="3" required></textarea>
+    <input type="file" id="photo" accept="image/*">
+    <button type="submit">Submit Complaint</button>
+  </form>
+</section>
+
+<section>
+  <h2>🗓️ Waste Collection Schedule</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Area</th>
+        <th>Timings</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Monday</td><td>Gandhipuram</td><td>6 AM - 8 AM</td></tr>
+      <tr><td>Tuesday</td><td>Saibaba Colony</td><td>6 AM - 8 AM</td></tr>
+      <tr><td>Wednesday</td><td>Peelamedu</td><td>6 AM - 9 AM</td></tr>
+      <tr><td>Thursday</td><td>Townhall</td><td>7 AM - 9 AM</td></tr>
+      <tr><td>Friday</td><td>Ukkadam</td><td>6 AM - 8 AM</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>💧 Water Supply Status</h2>
+  <div class="status">
+    <div class="card low"><h3>Gandhipuram</h3><p>Status: Low</p></div>
+    <div class="card normal"><h3>Saibaba Colony</h3><p>Status: Normal</p></div>
+    <div class="card no-supply"><h3>Peelamedu</h3><p>Status: No Supply</p></div>
+  </div>
+</section>
+
+<!-- Google Maps -->
+<script>
+  function initMap() {
+    const coimbatore = { lat: 11.0168, lng: 76.9558 };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 12,
+      center: coimbatore,
+    });
+
+    const waterPoints = [
+      { lat: 11.017, lng: 76.956, label: "Public Tap - Gandhipuram" },
+      { lat: 11.005, lng: 76.95, label: "Water Tank - Ukkadam" },
+      { lat: 11.03, lng: 76.96, label: "Hand Pump - Saibaba Colony" },
+    ];
+
+    waterPoints.forEach(point => {
+      new google.maps.Marker({
+        position: { lat: point.lat, lng: point.lng },
+        map,
+        title: point.label
+      });
+    });
+  }
+
+  function submitComplaint(e) {
+    e.preventDefault();
+    alert("✅ Complaint submitted successfully!");
+    document.querySelector("form").reset();
+  }
+</script>
+
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAloHVsXLCCTAM-P7RFGsP_lXyMgKyp1Jk&callback=initMap">
+</script>
+
+</body>
+</html>

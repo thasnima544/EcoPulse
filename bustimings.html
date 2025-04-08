@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coimbatore Bus Services</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #c37d7d;
+    }
+
+    h1 {
+      text-align: center;
+      color: #12161b;
+    }
+
+    #search {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #eaeaea;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead tr {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        background: #fff;
+      }
+
+      td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+      }
+
+      td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Coimbatore Bus Services</h1>
+
+  <input type="text" id="search" onkeyup="filterTable()" placeholder="Search for bus numbers or routes...">
+
+  <table id="busTable">
+    <thead>
+      <tr>
+        <th>Bus No</th>
+        <th>From</th>
+        <th>To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Bus data will be inserted here by JavaScript -->
+    </tbody>
+  </table>
+
+  <script>
+    const busData = [
+      { number: '1', from: 'Maruthamalai', to: 'Avarampalayam' },
+      { number: '1A', from: 'Ondipudur', to: 'Vadavalli' },
+      { number: '1C', from: 'Ondipudur', to: 'Vadavalli' },
+      { number: '1D', from: 'Ondipudur', to: 'Maruthamalai' },
+      { number: '2', from: 'Perur', to: 'Polytechnic' },
+      { number: '3', from: 'Ganapathy', to: 'Madukkarai' },
+      { number: '4', from: 'Thudiyalur', to: 'Podanur' },
+      { number: '5', from: 'Sivananda Colony', to: 'Sivananda Colony' },
+      { number: '6A', from: 'Gandhipuram', to: 'Perianaickanpalayam' },
+      { number: '8', from: 'Chettipalayam', to: 'Singanallur' },
+      { number: '9', from: 'Sundakamuthur', to: 'Krishnammal College' },
+      { number: '10', from: 'Saibaba Colony', to: 'Chinniampalayam' },
+      { number: '11', from: 'Railway Station', to: 'Kanuvai' },
+      { number: '11A', from: 'Ukkadam', to: 'Anuvavi Subramani Temple' },
+      { number: '11B', from: 'Railway Station', to: 'Veerapandipudur' },
+      { number: '11F', from: 'Railway Station', to: 'Edayarpalayam' },
+
+      // Add more buses as needed
+    ];
+
+    const tableBody = document.querySelector('#busTable tbody');
+
+    // Insert bus data into the table
+    busData.forEach(bus => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td data-label="Bus No">${bus.number}</td>
+        <td data-label="From">${bus.from}</td>
+        <td data-label="To">${bus.to}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+    // Filter function
+    function filterTable() {
+      const input = document.getElementById('search').value.toLowerCase();
+      const rows = tableBody.getElementsByTagName('tr');
+      for (let i = 0; i < rows.length; i++) {
+        const busNo = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
+        const from = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+        const to = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
+        if (busNo.includes(input) || from.includes(input) || to.includes(input)) {
+          rows[i].style.display = '';
+        } else {
+          rows[i].style.display = 'none';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
+

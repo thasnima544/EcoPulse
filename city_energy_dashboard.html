@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Urban Energy Dashboard</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #2C3E50;
+        }
+        .chart {
+            margin-bottom: 40px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        .gold { background-color: gold; }
+        .silver { background-color: silver; }
+        .bronze { background-color: #cd7f32; color: white; }
+    </style>
+</head>
+<body>
+    <h1>🌆 Urban Energy Insights Dashboard</h1>
+
+    <div class="chart">
+        <h2>🏠 Smart Home Monthly Energy Consumption</h2>
+        <img src="static/monthly_energy.png" width="90%">
+    </div>
+
+    <div class="chart">
+        <h2>🔌 Top 10 States by EV Charging Stations</h2>
+        <img src="static/ev_stations.png" width="80%">
+        <h3>🥇 State Badges</h3>
+        <ul>
+            <li class="badge silver">CA: 16106 stations</li><br>
+<li class="badge bronze">QC: 3502 stations</li><br>
+<li class="badge bronze">NY: 3409 stations</li><br>
+<li class="badge bronze">FL: 3113 stations</li><br>
+<li class="badge bronze">TX: 3002 stations</li><br>
+<li class="badge bronze">ON: 2472 stations</li><br>
+<li class="badge bronze">MA: 2385 stations</li><br>
+<li class="badge bronze">WA: 1916 stations</li><br>
+<li class="badge bronze">CO: 1894 stations</li><br>
+<li class="badge bronze">GA: 1763 stations</li><br>
+
+        </ul>
+    </div>
+</body>
+</html>

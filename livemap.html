@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Traffic Map</title>
+    <style>
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+    <script>
+      function initMap() {
+        const origin = { lat: 10.8626, lng: 76.8813 };
+        const destination = { lat: 10.9758, lng: 76.9590 };
+
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 12,
+          center: origin,
+          mapTypeId: "roadmap",
+        });
+
+        // Add live traffic layer
+        const trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+
+        // Color-coded route using DirectionsService
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+          polylineOptions: {
+            strokeColor: "#4285F4",
+            strokeWeight: 6,
+          },
+        });
+        directionsRenderer.setMap(map);
+
+        directionsService.route(
+          {
+            origin: origin,
+            destination: destination,
+            travelMode: google.maps.TravelMode.DRIVING,
+            drivingOptions: {
+              departureTime: new Date(), // current time
+              trafficModel: "bestguess"
+            }
+          },
+          (response, status) => {
+            if (status === "OK") {
+              directionsRenderer.setDirections(response);
+            } else {
+              window.alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAloHVsXLCCTAM-P7RFGsP_lXyMgKyp1Jk&callback=initMap"
+    ></script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>

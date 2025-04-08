@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EchoPulse - Personal Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e6f5ea, #f2fdf3);
+      color: #2e4e3f;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 30px;
+      margin: 0;
+      font-size: 2.5em;
+      background: linear-gradient(to right, #5cb85c, #4cae4c);
+      color: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #2d5931;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    .eco-box {
+      background: white;
+      margin: 40px auto;
+      padding: 30px;
+      max-width: 900px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Styles */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    select, input[type="file"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    button {
+      background: linear-gradient(to right, #56ab2f, #a8e063);
+      color: white;
+      font-size: 1em;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #419d1f, #92cc4c);
+    }
+
+    /* QR Display */
+    .qr {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1em;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #d0efdb;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    td:first-child {
+      font-weight: bold;
+    }
+
+    /* Rank Badge Colors */
+    .gold { color: #d4af37; font-weight: bold; }
+    .silver { color: #c0c0c0; font-weight: bold; }
+    .bronze { color: #cd7f32; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1>EchoPulse Personal Tracker</h1>
+
+  <!-- Emission Graph -->
+  <div class="eco-box">
+    <h2>Carbon Emission Tracker (Actual vs Predicted)</h2>
+    <img src="C:\Users\mehaj\OneDrive\Desktop\Ecopulse\static\emission_plot.png" alt="Carbon Emission Chart">
+  </div>
+
+  <!-- Activity Submission -->
+  <div class="eco-box">
+    <h2>Submit Eco-Friendly Activity</h2>
+    <form id="ecoForm">
+      <label for="activity">Choose Activity:</label>
+      <select id="activity" required>
+        <option value="planted_tree">Planted a Tree</option>
+        <option value="cycled_to_work">Cycled to Work</option>
+        <option value="used_solar_power">Used Solar Power</option>
+        <option value="organized_cleanup">Organized Clean-Up Drive</option>
+      </select>
+
+      <label for="geotag">Upload Geo-Tagged Image Proof:</label>
+      <input type="file" id="geotag" accept="image/*" required>
+
+      <button type="submit">Submit & Earn Points</button>
+    </form>
+
+    <div id="qrSection" class="qr"></div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="eco-box">
+    <h2>Eco Leaderboard - Top 10 Sustainable Warriors</h2>
+    <table id="leaderboard">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    document.getElementById('ecoForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const activity = document.getElementById('activity').value;
+      const fileInput = document.getElementById('geotag');
+      const file = fileInput.files[0];
+      if (!file) return alert("Please upload an image proof");
+
+      const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=EcoVoucher-${activity}-${Date.now()}`;
+      document.getElementById('qrSection').innerHTML = `<p>Your EcoVoucher QR:</p><img src="${qrURL}" alt="Voucher QR Code">`;
+    });
+
+    // Simulated leaderboard
+    const leaderboardData = [
+      { name: 'Aisha', points: 220 },
+      { name: 'Ravi', points: 200 },
+      { name: 'Lina', points: 190 },
+      { name: 'Zain', points: 180 },
+      { name: 'Tanya', points: 160 },
+      { name: 'Adeel', points: 150 },
+      { name: 'Sam', points: 140 },
+      { name: 'Meera', points: 130 },
+      { name: 'Ahmed', points: 120 },
+      { name: 'Nina', points: 110 }
+    ];
+
+    const tbody = document.querySelector("#leaderboard tbody");
+
+    leaderboardData.forEach((person, index) => {
+      let badge = '', badgeClass = '';
+
+      if (index < 3) {
+        badge = '🥇';
+        badgeClass = 'gold';
+      } else if (index < 7) {
+        badge = '🥈';
+        badgeClass = 'silver';
+      } else {
+        badge = '🥉';
+        badgeClass = 'bronze';
+      }
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="${badgeClass}">${index + 1} ${badge}</td>
+        <td>${person.name}</td>
+        <td>${person.points}</td>`;
+      tbody.appendChild(tr);
+    });
+  </script>
+
+</body>
+</html>
